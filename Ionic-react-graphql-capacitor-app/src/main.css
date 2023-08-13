@@ -1,0 +1,28 @@
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    border: 1px solid red;
+}
+.flex-vertical{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80%;
+    border: 1px solid red;
+}
+.button{
+    width: 50%;
+    margin: 10px auto;
+}
+
+.input{
+    margin: 20px 0;
+}
+.grille{
+    margin-top: 80px;
+}
+.border{
+    border: 1px solid red;
+}
