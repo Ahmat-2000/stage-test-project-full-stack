@@ -1,0 +1,49 @@
+service: apollo-lambda-server
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  httpApi:
+    cors: true
+
+plugins:
+ - serverless-plugin-typescript
+ - serverless-dynamodb-local
+ - serverless-offline
+
+resources:
+  Resources:
+    Products:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Products
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: name
+            AttributeType: S
+          - AttributeName: price
+            AttributeType: N
+          - AttributeName: quantity
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+functions:
+  graphql:
+    # Make sure your file path is correct!
+    # (e.g., if your file is in the root folder use server.graphqlHandler )
+    # The format is: <FILENAME>.<HANDLER>
+    handler: src/server.graphqlHandler 
+    events:
+      - httpApi:
+          path: /
+          method: POST
+      - httpApi:
+          path: /
+          method: GET
