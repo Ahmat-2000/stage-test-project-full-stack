@@ -1,4 +1,4 @@
-import { IonIcon, IonLabel, IonRedirect, IonRoute, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact, } from '@ionic/react';
+import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact, } from '@ionic/react';
 import {addCircleSharp, homeSharp, listCircleSharp} from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
@@ -25,11 +25,22 @@ import Home from './pages/Home';
 import ShowProducts from './pages/ShowProducts';
 import "./main.css";
 import { Route, Redirect } from 'react-router';
+import {createContext, useState} from "react";
+import {UpdatecontextType} from "./Interfaces/Type";
 setupIonicReact();
 
+export const updateContext = createContext<any>({});
+
 const App: React.FC = () => {
-  
+  const [updateInput,setUpdateInput] = useState<UpdatecontextType>({
+    id: "",
+    name : "",
+    price: null,
+    quantity: null,
+    isUpdate: false
+  });
   return(
+    <updateContext.Provider value={{updateInput,setUpdateInput}}>
     <IonReactRouter>
       <IonTabs>
         {/* Routes redirections handling */}
@@ -65,6 +76,7 @@ const App: React.FC = () => {
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
+    </updateContext.Provider>
   )
 };
 

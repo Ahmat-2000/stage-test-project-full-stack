@@ -1,8 +1,26 @@
 import { IonCol, IonContent, IonGrid, IonHeader, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import Product from '../components/Product';
-import DB from '../data';
+// import DB from '../data';
 import { Item } from '../Interfaces/Type';
+// Import everything needed to use the `useQuery` hook
+import { useQuery, gql } from '@apollo/client';
+
+const GET_ALL_PRODUCTS = gql`
+  query{
+    getAllProduct {
+      id
+      name
+      price
+      quantity
+    }
+  }
+`;
 const ShowProducts: React.FC = () => {
+  const { loading, error, data } = useQuery(GET_ALL_PRODUCTS,{pollInterval: 400});
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
   return (
     <>
       <IonHeader>
@@ -12,16 +30,16 @@ const ShowProducts: React.FC = () => {
       </IonHeader>
       <IonContent color="light">
         <div className='ion-margin'> 
-        <IonGrid fixed={true} className='grille'>
+        <IonGrid fixed={true}>
             <IonRow>
-                <IonCol>Name</IonCol>
-                <IonCol>Price</IonCol>
-                <IonCol>Quantity</IonCol>
-                <IonCol>Delete</IonCol>
-                <IonCol>Update</IonCol>
+                <IonCol className="center">Name</IonCol>
+                <IonCol className="center">Price</IonCol>
+                <IonCol className="center">Quantity</IonCol>
+                <IonCol className="center">Delete</IonCol>
+                <IonCol className="center">Update</IonCol>
             </IonRow>
             {
-                DB.map((prod: Item) => (<Product item={prod} />) )
+                data.getAllProduct.map((prod: Item) => (<Product item={prod} key={prod.id} />) )
             }
         </IonGrid>
         </div>
